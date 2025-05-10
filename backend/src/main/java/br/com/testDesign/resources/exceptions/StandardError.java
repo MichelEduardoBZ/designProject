@@ -1,4 +1,4 @@
-package br.com.testDesign.resources;
+package br.com.testDesign.resources.exceptions;
 
 import java.time.Instant;
 
