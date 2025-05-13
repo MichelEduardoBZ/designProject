@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "tb_category")
-public class Category  {
+public class CategoryEntity extends  BasicEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,9 +16,9 @@ public class Category  {
     @NotNull
     private String name;
 
-    public Category() {   }
+    public CategoryEntity() {   }
 
-    public Category(Long id, String name) {
+    public CategoryEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }
@@ -42,8 +42,8 @@ public class Category  {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Category category = (Category) o;
-        return Objects.equals(id, category.id);
+        CategoryEntity categoryEntity = (CategoryEntity) o;
+        return Objects.equals(id, categoryEntity.id);
     }
 
     @Override
