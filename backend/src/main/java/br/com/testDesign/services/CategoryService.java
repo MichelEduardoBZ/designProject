@@ -25,18 +25,18 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public Page<CategoryDTO> findAll(PageRequest pageRequest) {
-        return categoryRepository.findAll(pageRequest).map(e -> categoryTransform.transformToDTO(e));
+        return categoryRepository.findAll(pageRequest).map(e -> categoryTransform.convertToDTO(e));
     }
 
     @Transactional(readOnly = true)
     public CategoryDTO findByIdl(Long id) {
-        return categoryTransform.transformToDTO(categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new));
+        return categoryTransform.convertToDTO(categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
     @Transactional
     public CategoryDTO insertCategory(CategoryDTO categoryDTO) {
-        CategoryEntity categoryEntity = categoryRepository.save(categoryTransform.transformToEntity(categoryDTO));
-        return categoryTransform.transformToDTO(categoryEntity);
+        CategoryEntity categoryEntity = categoryRepository.save(categoryTransform.convertToEntity(categoryDTO));
+        return categoryTransform.convertToDTO(categoryEntity);
     }
 
     @Transactional
@@ -44,7 +44,7 @@ public class CategoryService {
         try {
             CategoryEntity categoryEntity = categoryRepository.getReferenceById(categoryId);
             categoryEntity.setName(categoryDTO.getName());
-            return categoryTransform.transformToDTO(categoryRepository.save(categoryEntity));
+            return categoryTransform.convertToDTO(categoryRepository.save(categoryEntity));
         } catch (EntityNotFoundException e) {
             throw new EntityNotFoundException("Id not found " + categoryId);
         }
