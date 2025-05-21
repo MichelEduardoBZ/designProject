@@ -4,7 +4,7 @@ import br.com.testDesign.dto.CategoryDTO;
 import br.com.testDesign.entities.CategoryEntity;
 import br.com.testDesign.repositories.CategoryRepository;
 import br.com.testDesign.services.exceptions.DatabaseException;
-import br.com.testDesign.services.exceptions.EntityNotFoundException;
+import br.com.testDesign.services.exceptions.ResourceNotFoundException;
 import br.com.testDesign.transform.category.CategoryTransform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -30,7 +30,7 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     public CategoryDTO findByIdl(Long id) {
-        return categoryTransform.convertToDTO(categoryRepository.findById(id).orElseThrow(EntityNotFoundException::new));
+        return categoryTransform.convertToDTO(categoryRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 
     @Transactional
@@ -45,15 +45,15 @@ public class CategoryService {
             CategoryEntity categoryEntity = categoryRepository.getReferenceById(categoryId);
             categoryEntity.setName(categoryDTO.getName());
             return categoryTransform.convertToDTO(categoryRepository.save(categoryEntity));
-        } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Id not found " + categoryId);
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException("Id not found " + categoryId);
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deleteCategory(Long categoryId) {
         if(!categoryRepository.existsById(categoryId)) {
-            throw new EntityNotFoundException();
+            throw new ResourceNotFoundException();
         }
         try {
             categoryRepository.deleteById(categoryId);

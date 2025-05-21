@@ -4,8 +4,9 @@ import br.com.testDesign.dto.ProductDTO;
 import br.com.testDesign.entities.ProductEntity;
 import br.com.testDesign.repositories.ProductRepository;
 import br.com.testDesign.services.exceptions.DatabaseException;
-import br.com.testDesign.services.exceptions.EntityNotFoundException;
+import br.com.testDesign.services.exceptions.ResourceNotFoundException;
 import br.com.testDesign.transform.product.ProductTransform;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -29,8 +30,8 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public ProductDTO findByIdl(Long id) {
-        return productTransform.convertToDTO(productRepository.findById(id).orElseThrow(EntityNotFoundException::new));
+    public ProductDTO findById(Long id) {
+        return productTransform.convertToDTO(productRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 
     @Transactional
@@ -44,16 +45,17 @@ public class ProductService {
         try {
             ProductEntity productEntity = productRepository.getReferenceById(productId);
             productEntity.setName(productDTO.getName());
+            productEntity.setDescription(productDTO.getDescription());
             return productTransform.convertToDTO(productRepository.save(productEntity));
         } catch (EntityNotFoundException e) {
-            throw new EntityNotFoundException("Id not found " + productId);
+            throw new ResourceNotFoundException("Id not found " + productId);
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deleteProduct(Long productId) {
         if(!productRepository.existsById(productId)) {
-            throw new EntityNotFoundException();
+            throw new ResourceNotFoundException();
         }
         try {
             productRepository.deleteById(productId);

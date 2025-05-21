@@ -1,7 +1,7 @@
 package br.com.testDesign.resources.exceptions;
 
 import br.com.testDesign.services.exceptions.DatabaseException;
-import br.com.testDesign.services.exceptions.EntityNotFoundException;
+import br.com.testDesign.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +13,8 @@ import java.time.Instant;
 @ControllerAdvice
 public class ResourceExceptionHandler {
 
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<StandardError> entityNotFound(EntityNotFoundException e, HttpServletRequest request) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<StandardError> entityNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError error  = new StandardError();
         error.setTimestamp(Instant.now());
@@ -26,7 +26,7 @@ public class ResourceExceptionHandler {
     }
 
     @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<StandardError> dataBaseE(DatabaseException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> dataBaseException(DatabaseException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
         StandardError error  = new StandardError();
         error.setTimestamp(Instant.now());

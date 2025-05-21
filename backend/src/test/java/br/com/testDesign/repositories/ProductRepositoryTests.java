@@ -1,7 +1,6 @@
 package br.com.testDesign.repositories;
 
 import br.com.testDesign.entities.ProductEntity;
-import br.com.testDesign.services.exceptions.EntityNotFoundException;
 import br.com.testDesign.tests.ProductFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
