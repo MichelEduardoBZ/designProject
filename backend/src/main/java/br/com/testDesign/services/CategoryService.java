@@ -29,7 +29,7 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public CategoryDTO findByIdl(Long id) {
+    public CategoryDTO findById(Long id) {
         return categoryTransform.convertToDTO(categoryRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
 

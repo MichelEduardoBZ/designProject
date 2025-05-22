@@ -25,7 +25,7 @@ public class CategoryResource {
 
     @GetMapping(value = "/{categoryId}")
     public ResponseEntity<CategoryDTO> findById(@PathVariable  Long categoryId) {
-        return ResponseEntity.ok(categoryService.findByIdl(categoryId));
+        return ResponseEntity.ok(categoryService.findById(categoryId));
     }
 
     @PostMapping

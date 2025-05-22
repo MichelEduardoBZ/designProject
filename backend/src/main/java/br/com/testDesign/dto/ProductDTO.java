@@ -1,8 +1,5 @@
 package br.com.testDesign.dto;
 
-import br.com.testDesign.entities.ProductEntity;
-import jakarta.persistence.Column;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,9 @@ package br.com.testDesign.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_category")
@@ -15,6 +17,9 @@ public class CategoryEntity extends  BasicEntity {
 
     @NotNull
     private String name;
+
+    @ManyToMany(mappedBy = "categories")
+    private Set<ProductEntity> products = new HashSet<>();
 
     public CategoryEntity() {   }
 
@@ -37,6 +42,10 @@ public class CategoryEntity extends  BasicEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Set<ProductEntity> getProducts() {
+        return products;
     }
 
     @Override
