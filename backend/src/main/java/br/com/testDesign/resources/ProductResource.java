@@ -2,6 +2,7 @@ package br.com.testDesign.resources;
 
 import br.com.testDesign.dto.ProductDTO;
 import br.com.testDesign.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +30,7 @@ public class ProductResource {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> insertProduct(@RequestBody  ProductDTO  productDTO) {
+    public ResponseEntity<ProductDTO> insertProduct(@Valid @RequestBody  ProductDTO  productDTO) {
         productDTO = productService.insertProduct(productDTO);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -41,7 +42,7 @@ public class ProductResource {
     }
 
     @PutMapping("/{productId}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,  @RequestBody  ProductDTO  productDTO) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,  @Valid @RequestBody  ProductDTO  productDTO) {
         return ResponseEntity.ok(productService.updateProduct(productId, productDTO));
     }
 

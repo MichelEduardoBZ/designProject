@@ -3,6 +3,7 @@ package br.com.testDesign.resources;
 import br.com.testDesign.dto.UserDTO;
 import br.com.testDesign.dto.UserInsertDTO;
 import br.com.testDesign.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,7 +31,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insertUser(@RequestBody UserInsertDTO  userInsertDTO) {
+    public ResponseEntity<UserDTO> insertUser(@Valid @RequestBody UserInsertDTO  userInsertDTO) {
         UserDTO userDTO = userService.insertUser(userInsertDTO);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -42,7 +43,7 @@ public class UserResource {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId,  @RequestBody  UserDTO  userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @Valid  @RequestBody  UserDTO  userDTO) {
         return ResponseEntity.ok(userService.updateUser(userId, userDTO));
     }
 
