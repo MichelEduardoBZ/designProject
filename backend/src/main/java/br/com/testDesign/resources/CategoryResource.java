@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,6 +29,7 @@ public class CategoryResource {
         return ResponseEntity.ok(categoryService.findById(categoryId));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<CategoryDTO> insertCategory(@RequestBody  CategoryDTO  categoryDTO) {
         categoryDTO = categoryService.insertCategory(categoryDTO);
@@ -40,11 +42,13 @@ public class CategoryResource {
         return ResponseEntity.created(uri).body(categoryDTO);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId,  @RequestBody  CategoryDTO  categoryDTO) {
         return ResponseEntity.ok(categoryService.updateCategory(categoryId, categoryDTO));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {
         categoryService.deleteCategory(categoryId);

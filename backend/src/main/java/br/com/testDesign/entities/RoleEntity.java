@@ -1,12 +1,13 @@
 package br.com.testDesign.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_role")
-public class RoleEntity extends BasicEntity {
+public class RoleEntity extends BasicEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +30,7 @@ public class RoleEntity extends BasicEntity {
         this.id = id;
     }
 
+    @Override
     public String getAuthority() {
         return authority;
     }
