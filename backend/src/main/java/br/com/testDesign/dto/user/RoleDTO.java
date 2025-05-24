@@ -1,4 +1,6 @@
-package br.com.testDesign.dto;
+package br.com.testDesign.dto.user;
+
+import br.com.testDesign.dto.BasicDTO;
 
 public class RoleDTO extends BasicDTO {
 

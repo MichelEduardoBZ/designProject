@@ -1,7 +1,8 @@
 package br.com.testDesign.services;
 
-import br.com.testDesign.dto.UserDTO;
-import br.com.testDesign.dto.UserInsertDTO;
+import br.com.testDesign.dto.user.UserDTO;
+import br.com.testDesign.dto.user.UserInsertDTO;
+import br.com.testDesign.dto.user.UserUpdateDTO;
 import br.com.testDesign.entities.UserEntity;
 import br.com.testDesign.repositories.RoleRepository;
 import br.com.testDesign.repositories.UserRepository;
@@ -54,7 +55,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO updateUser(Long userId, UserDTO userDTO) {
+    public UserDTO updateUser(Long userId, UserUpdateDTO userDTO) {
         try {
             UserEntity userEntity = userRepository.getReferenceById(userId);
             userEntity.setFirstName(userDTO.getFirstName());

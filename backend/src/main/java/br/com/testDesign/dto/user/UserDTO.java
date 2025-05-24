@@ -1,5 +1,6 @@
-package br.com.testDesign.dto;
+package br.com.testDesign.dto.user;
 
+import br.com.testDesign.dto.BasicDTO;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 

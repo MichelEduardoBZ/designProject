@@ -1,6 +1,6 @@
 package br.com.testDesign.transform.security;
 
-import br.com.testDesign.dto.RoleDTO;
+import br.com.testDesign.dto.user.RoleDTO;
 import br.com.testDesign.entities.RoleEntity;
 import br.com.testDesign.transform.TransformContractImpl;
 import org.springframework.stereotype.Component;

@@ -1,5 +1,8 @@
-package br.com.testDesign.dto;
+package br.com.testDesign.dto.user;
 
+import br.com.testDesign.services.validation.user.UserInsertValid;
+
+@UserInsertValid
 public class UserInsertDTO extends UserDTO {
 
     private String password;

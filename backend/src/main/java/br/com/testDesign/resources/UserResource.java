@@ -1,7 +1,8 @@
 package br.com.testDesign.resources;
 
-import br.com.testDesign.dto.UserDTO;
-import br.com.testDesign.dto.UserInsertDTO;
+import br.com.testDesign.dto.user.UserDTO;
+import br.com.testDesign.dto.user.UserInsertDTO;
+import br.com.testDesign.dto.user.UserUpdateDTO;
 import br.com.testDesign.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class UserResource {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @Valid  @RequestBody  UserDTO  userDTO) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @Valid  @RequestBody UserUpdateDTO  userDTO) {
         return ResponseEntity.ok(userService.updateUser(userId, userDTO));
     }
 
