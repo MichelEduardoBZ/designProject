@@ -2,6 +2,7 @@ package br.com.testDesign.resources;
 
 import br.com.testDesign.dto.ProductDTO;
 import br.com.testDesign.tests.ProductFactory;
+import br.com.testDesign.tests.TokenUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,15 +28,24 @@ public class ProductResourceIT {
     private long nonExistingId;
     private long countTotalProducts;
 
+    private String username, password, bearerToken;
+
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private TokenUtil tokenUtil;
+
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws Exception {
         initializeIds();
+
+        username = "maria@gmail.com";
+        password = "123456";
+        bearerToken = tokenUtil.obtainAccessToken(mockMvc, username, password);
     }
 
     private void initializeIds() {
@@ -66,6 +76,7 @@ public class ProductResourceIT {
         String expectedDescription = productDTO.getDescription();
 
         ResultActions result = mockMvc.perform(put("/products/{id}", existingId)
+                .header("Authorization", "Bearer " + bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody)
                 .accept(MediaType.APPLICATION_JSON));
@@ -81,6 +92,7 @@ public class ProductResourceIT {
         String jsonBody = objectMapper.writeValueAsString(ProductFactory.createProductDTO());
 
         ResultActions result = mockMvc.perform(put("/products/{id}", nonExistingId)
+                .header("Authorization", "Bearer " + bearerToken)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonBody)
                 .accept(MediaType.APPLICATION_JSON));

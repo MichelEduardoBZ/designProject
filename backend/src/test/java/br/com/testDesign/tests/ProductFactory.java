@@ -10,13 +10,13 @@ import java.time.Instant;
 public class ProductFactory {
 
     public  static ProductEntity createProductEntityWithData() {
-        ProductEntity product = new ProductEntity(1L, "Livros", "Harry Poter V7", 129.99, "https://img.com/img.png", Instant.parse("2077-12-12T03:00:00Z"));
+        ProductEntity product = new ProductEntity(1L, "Livros", "Harry Poter V7", 129.99, "https://img.com/img.png", Instant.parse("2004-12-12T03:00:00Z"));
         product.getCategories().add(new CategoryEntity(1L, "Livros"));
         return product;
     }
 
     public  static ProductDTO createProductDTO() {
-        ProductDTO productDTO = new ProductDTO(1L, "Livros", "Harry Poter V7", 129.99, "https://img.com/img.png", Instant.parse("2077-12-12T03:00:00Z"));
+        ProductDTO productDTO = new ProductDTO(1L, "Livros", "Harry Poter V7", 129.99, "https://img.com/img.png", Instant.parse("2004-12-12T03:00:00Z"));
         productDTO.getCategories().add(new CategoryDTO(1L, "Livros"));
         return productDTO;
     }
