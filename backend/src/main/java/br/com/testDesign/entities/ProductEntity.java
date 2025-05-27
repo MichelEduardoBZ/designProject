@@ -12,10 +12,6 @@ import java.util.Set;
 @Table(name = "tb_product")
 public class ProductEntity extends BasicEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotNull
     private String name;
 
@@ -35,8 +31,8 @@ public class ProductEntity extends BasicEntity {
 
     public ProductEntity() {}
 
-    public ProductEntity(Long id, String name, String description, Double price, String imgUrl, Instant date) {
-        this.id = id;
+    public ProductEntity(long id, String name, String description, Double price, String imgUrl,  Instant date) {
+        super(id);
         this.name = name;
         this.description = description;
         this.price = price;
@@ -44,12 +40,12 @@ public class ProductEntity extends BasicEntity {
         this.date = date;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public ProductEntity(String name, String description, Double price, String imgUrl, Instant date) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imgUrl = imgUrl;
+        this.date = date;
     }
 
     public String getName() {
@@ -100,11 +96,11 @@ public class ProductEntity extends BasicEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ProductEntity that = (ProductEntity) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(getId(), that.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 }

@@ -1,6 +1,8 @@
 package br.com.testDesign.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 import java.util.HashSet;
@@ -11,10 +13,6 @@ import java.util.Set;
 @Table(name = "tb_category")
 public class CategoryEntity extends  BasicEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @NotNull
     private String name;
 
@@ -23,17 +21,13 @@ public class CategoryEntity extends  BasicEntity {
 
     public CategoryEntity() {   }
 
-    public CategoryEntity(Long id, String name) {
-        this.id = id;
+    public CategoryEntity(long id, String name) {
+        super(id);
         this.name = name;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public CategoryEntity(String name) {
+        this.name = name;
     }
 
     public String getName() {
@@ -52,11 +46,11 @@ public class CategoryEntity extends  BasicEntity {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         CategoryEntity categoryEntity = (CategoryEntity) o;
-        return Objects.equals(id, categoryEntity.id);
+        return Objects.equals(getId(), categoryEntity.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 }

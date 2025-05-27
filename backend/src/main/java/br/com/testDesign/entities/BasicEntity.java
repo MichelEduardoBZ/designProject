@@ -12,6 +12,10 @@ import java.time.Instant;
 @MappedSuperclass
 public abstract class BasicEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant createdAt;
 
@@ -23,9 +27,23 @@ public abstract class BasicEntity {
 
     public BasicEntity() {}
 
-    public BasicEntity(Instant createdAt, Instant updatedAt) {
+    public BasicEntity(long id) {
+        this.id = id;
+    }
+
+    public BasicEntity(long id, Instant createdAt, Instant updatedAt, Long version) {
+        this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.version = version;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public Instant getCreatedAt() {

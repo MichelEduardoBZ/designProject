@@ -1,6 +1,7 @@
 package br.com.testDesign.entities;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
@@ -9,25 +10,17 @@ import java.util.Objects;
 @Table(name = "tb_role")
 public class RoleEntity extends BasicEntity implements GrantedAuthority {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     private String authority;
 
     public RoleEntity(){}
 
-    public RoleEntity(long id, String authority) {
-        this.id = id;
+    public RoleEntity(String authority) {
         this.authority = authority;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public RoleEntity(long id, String authority) {
+        super(id);
+        this.authority = authority;
     }
 
     @Override
@@ -43,11 +36,11 @@ public class RoleEntity extends BasicEntity implements GrantedAuthority {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         RoleEntity role = (RoleEntity) o;
-        return id == role.id;
+        return getId() == role.getId();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 }

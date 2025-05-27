@@ -4,15 +4,14 @@ import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
 public class UserEntity extends BasicEntity implements UserDetails {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String firstName;
     private String lastName;
@@ -29,20 +28,20 @@ public class UserEntity extends BasicEntity implements UserDetails {
 
     public UserEntity(){}
 
-    public UserEntity(Long id, String firstName, String lastName, String email, String password) {
-        this.id = id;
+    public UserEntity(long id, String firstName, String lastName, String email, String password, Set<RoleEntity> roles) {
+        super(id);
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.roles = roles;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public UserEntity(String firstName, String lastName, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -122,11 +121,11 @@ public class UserEntity extends BasicEntity implements UserDetails {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         UserEntity user = (UserEntity) o;
-        return Objects.equals(id, user.id);
+        return Objects.equals(getId(), user.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(getId());
     }
 }
