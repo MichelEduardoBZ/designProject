@@ -1,6 +1,7 @@
 package br.com.testDesign.resources;
 
 import br.com.testDesign.dto.ProductDTO;
+import br.com.testDesign.projection.ProductProjection;
 import br.com.testDesign.services.ProductService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,15 @@ public class ProductResource {
     @GetMapping
     public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
         return ResponseEntity.ok(productService.findAll(pageable));
+    }
+
+    @GetMapping(value = "/filter")
+    public ResponseEntity<Page<ProductDTO>> findAllPaged(
+            @RequestParam(value = "name", defaultValue = "") String name,
+            @RequestParam(value = "categoryId", defaultValue = "0")  String categoryId,
+            Pageable pageable)
+    {
+        return ResponseEntity.ok(productService.findAllPaged(name, categoryId, pageable));
     }
 
     @GetMapping(value = "/{productId}")
