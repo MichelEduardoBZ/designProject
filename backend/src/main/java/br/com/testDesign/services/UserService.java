@@ -20,7 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +40,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Transactional(readOnly = true)
     public Page<UserDTO> findAll(Pageable pageable) {
         return userRepository.findAll(pageable).map(e -> userTransform.convertToDTO(e));
@@ -54,7 +56,11 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserDTO insertUser(UserInsertDTO userInsertDTO) {
         UserEntity userEntity = userRepository.save(userTransform.convertToEntity(userInsertDTO));
-        userEntity.setPassword(userInsertDTO.getPassword());
+
+        userEntity.getRoles().clear();
+        userEntity.getRoles().add(roleRepository.findByAuthority("ROLE_OPERATOR"));
+
+        userEntity.setPassword(passwordEncoder.encode(userInsertDTO.getPassword()));
         return userTransform.convertToDTO(userEntity);
     }
 
