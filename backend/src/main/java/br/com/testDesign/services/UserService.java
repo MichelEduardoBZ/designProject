@@ -41,6 +41,9 @@ public class UserService implements UserDetailsService {
     private RoleRepository roleRepository;
 
     @Autowired
+    private AuthService authService;
+
+    @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
@@ -51,6 +54,11 @@ public class UserService implements UserDetailsService {
     @Transactional(readOnly = true)
     public UserDTO findById(Long id) {
         return userTransform.convertToDTO(userRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO findUserAuthenticated() {
+        return userTransform.convertToDTO(authService.authenticated());
     }
 
     @Transactional

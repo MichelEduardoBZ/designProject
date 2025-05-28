@@ -1,6 +1,7 @@
 package br.com.testDesign.resources.exceptions;
 
 import br.com.testDesign.services.exceptions.DatabaseException;
+import br.com.testDesign.services.exceptions.EmailException;
 import br.com.testDesign.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -53,6 +54,18 @@ public class ResourceExceptionHandler {
             error.addError(err.getField(), err.getDefaultMessage());
         }
 
+        return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(EmailException.class)
+    public ResponseEntity<StandardError> email(EmailException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        StandardError error  = new StandardError();
+        error.setTimestamp(Instant.now());
+        error.setStatus(status.value());
+        error.setError("EmailException exception");
+        error.setMessage(e.getMessage());
+        error.setPath(request.getRequestURI());
         return ResponseEntity.status(status).body(error);
     }
 }
