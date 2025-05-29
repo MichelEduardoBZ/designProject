@@ -103,6 +103,42 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.7</version>
+                <configuration>
+                    <excludes>
+                        <exclude>br/com/testDesign/TestDesignApplication.class</exclude>
+                        <exclude>br/com/testDesign/config/**</exclude>
+                        <exclude>br/com/testDesign/entities/**</exclude>
+                        <exclude>br/com/testDesign/dto/**</exclude>
+                        <exclude>br/com/testDesign/transform/**</exclude>
+                        <exclude>br/com/testDesign/util/**</exclude>
+                        <exclude>br/com/testDesign/resources/exceptions/**</exclude>
+                        <exclude>br/com/testDesign/services/exceptions/**</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>jacoco-report</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>target/jacoco-report</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
