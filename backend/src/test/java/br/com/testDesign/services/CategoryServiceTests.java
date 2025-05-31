@@ -103,7 +103,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void insertProductShouldReturnCategoryDTO() {
+    public void insertCategoryShouldReturnCategoryDTO() {
         CategoryDTO newCategoryDTO = service.insertCategory(categoryDTO);
 
         Assertions.assertNotNull(newCategoryDTO);
@@ -114,7 +114,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void updateProductShouldReturnCategoryDTOWhenIdExists() {
+    public void updateCategoryShouldReturnCategoryDTOWhenIdExists() {
         CategoryDTO newCategoryDTO = service.updateCategory(existingId, categoryDTO);
 
         Assertions.assertNotNull(newCategoryDTO);
@@ -123,7 +123,7 @@ public class CategoryServiceTests {
     }
 
     @Test
-    public void updateProductShouldThrowsEntityNotFoundExceptionWhenIdDoesNotExists() {
+    public void updateCategoryShouldThrowsEntityNotFoundExceptionWhenIdDoesNotExists() {
         Assertions.assertThrows(ResourceNotFoundException.class, () -> {
             service.updateCategory(nonExistingId, categoryDTO);
         });

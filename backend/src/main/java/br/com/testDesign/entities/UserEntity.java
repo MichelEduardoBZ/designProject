@@ -37,6 +37,14 @@ public class UserEntity extends BasicEntity implements UserDetails {
         this.roles = roles;
     }
 
+    public UserEntity(long id, String firstName, String lastName, String email, String password) {
+        super(id);
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
     public UserEntity(String firstName, String lastName, String email, String password) {
         this.firstName = firstName;
         this.lastName = lastName;

@@ -2,11 +2,13 @@ package br.com.testDesign.services;
 
 import br.com.testDesign.dto.ProductDTO;
 import br.com.testDesign.entities.ProductEntity;
+import br.com.testDesign.projection.ProductProjection;
 import br.com.testDesign.repositories.ProductRepository;
 import br.com.testDesign.services.exceptions.DatabaseException;
 import br.com.testDesign.services.exceptions.ResourceNotFoundException;
 import br.com.testDesign.tests.ProductFactory;
 import br.com.testDesign.transform.product.ProductTransform;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -77,7 +79,7 @@ public class ProductServiceTests {
         Mockito.when(repository.findById(nonExistingId)).thenReturn(Optional.empty());
 
         Mockito.when(repository.getReferenceById(existingId)).thenReturn(product);
-        Mockito.doThrow(ResourceNotFoundException.class).when(repository).getReferenceById(nonExistingId);
+        Mockito.doThrow(EntityNotFoundException.class).when(repository).getReferenceById(nonExistingId);
 
         Mockito.doNothing().when(repository).deleteById(existingId);
         Mockito.doThrow(DataIntegrityViolationException.class).when(repository).deleteById(dependentId);
@@ -85,6 +87,7 @@ public class ProductServiceTests {
 
     private void mockTransformBehavior() {
         Mockito.when(productTransform.convertToDTO(ArgumentMatchers.any())).thenReturn(productDTO);
+        Mockito.when(productTransform.convertToEntity(ArgumentMatchers.any())).thenReturn(product);
     }
 
     @Test
@@ -105,12 +108,62 @@ public class ProductServiceTests {
     }
 
     @Test
-    public void findAllPagedShouldReturnPage() {
+    public void findAllShouldReturnPage() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<ProductDTO> result = service.findAll(pageable);
 
         Assertions.assertNotNull(result);
         Mockito.verify(repository, Mockito.times(1)).findAll(pageable);
+    }
+
+    @Test
+    public void findAllPagedShouldReturnPage() {
+        Pageable pageable = PageRequest.of(0, 10);
+        String name = "pc";
+        String categories = "1,2";
+
+        List<Long> listCategoriesId = List.of(1L, 2L);
+
+        // Criar um ProductProjection mock (interface)
+        ProductProjection productProjection = Mockito.mock(ProductProjection.class);
+        Mockito.when(productProjection.getId()).thenReturn(product.getId());
+
+        // Criar a Page de ProductProjection
+        Page<ProductProjection> productProjectionPage = new PageImpl<>(List.of(productProjection), pageable, 1);
+
+        // Mock do repository para searchProductsByCategoriesAndName
+        Mockito.when(repository.searchProductsByCategoriesAndName(
+                ArgumentMatchers.eq(listCategoriesId),
+                ArgumentMatchers.eq(name),
+                ArgumentMatchers.eq(pageable)
+        )).thenReturn(productProjectionPage);
+
+        // Mock do repository para searchProductsWithCategories (retorna lista ProductEntity)
+        Mockito.when(repository.searchProductsWithCategories(ArgumentMatchers.anyList())).thenReturn(List.of(product));
+
+        // Mock do transform para converter ProductEntity para ProductDTO
+        Mockito.when(productTransform.convertToDTO(ArgumentMatchers.any(ProductEntity.class))).thenReturn(productDTO);
+
+        Page<ProductDTO> result = service.findAllPaged(name, categories, pageable);
+
+        Assertions.assertNotNull(result);
+        Assertions.assertFalse(result.isEmpty());
+        Assertions.assertEquals(productDTO.getId(), result.getContent().get(0).getId());
+
+        Mockito.verify(repository, Mockito.times(1)).searchProductsByCategoriesAndName(listCategoriesId, name, pageable);
+        Mockito.verify(repository, Mockito.times(1)).searchProductsWithCategories(ArgumentMatchers.anyList());
+        Mockito.verify(productTransform, Mockito.times(1)).convertToDTO(product);
+    }
+
+    @Test
+    public void insertProductShouldReturnProductDTO() {
+        ProductDTO newProductDTO = service.insertProduct(productDTO);
+
+        Assertions.assertNotNull(newProductDTO);
+        Assertions.assertEquals(newProductDTO.getId(), product.getId());
+        Assertions.assertEquals(newProductDTO.getName(), product.getName());
+
+        Mockito.verify(repository, Mockito.times(1)).save(product);
     }
 
     @Test

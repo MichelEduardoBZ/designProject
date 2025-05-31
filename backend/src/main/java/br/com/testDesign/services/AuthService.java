@@ -7,6 +7,7 @@ import br.com.testDesign.entities.UserEntity;
 import br.com.testDesign.repositories.PasswordRecoverRepository;
 import br.com.testDesign.repositories.UserRepository;
 import br.com.testDesign.services.exceptions.ResourceNotFoundException;
+import br.com.testDesign.util.CustomUserUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -42,6 +43,17 @@ public class AuthService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private CustomUserUtil customUserUtil;
+
+    public void setRecoverUri(String recoverUri) {
+        this.recoverUri = recoverUri;
+    }
+
+    public void setTokenMinutes(Long tokenMinutes) {
+        this.tokenMinutes = tokenMinutes;
+    }
 
     @Transactional
     public void createRecoverToken(EmailDTO body) {
@@ -94,10 +106,7 @@ public class AuthService {
 
     protected UserEntity authenticated() {
         try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
-            String username = jwtPrincipal.getClaim("username");
-            return userRepository.findByEmail(username);
+            return userRepository.findByEmail(customUserUtil.getLoggedUsername());
         } catch (Exception e) {
             throw new UsernameNotFoundException("Invalid user");
         }

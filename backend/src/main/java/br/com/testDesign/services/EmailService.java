@@ -17,6 +17,22 @@ public class EmailService {
     @Autowired
     private JavaMailSender emailSender;
 
+    public String getEmailFrom() {
+        return emailFrom;
+    }
+
+    public void setEmailFrom(String emailFrom) {
+        this.emailFrom = emailFrom;
+    }
+
+    public JavaMailSender getEmailSender() {
+        return emailSender;
+    }
+
+    public void setEmailSender(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
+
     public void sendEmail(String to, String subject, String body) {
         try{
             SimpleMailMessage message = new SimpleMailMessage();
