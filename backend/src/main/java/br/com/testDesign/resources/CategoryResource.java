@@ -2,6 +2,7 @@ package br.com.testDesign.resources;
 
 import br.com.testDesign.dto.CategoryDTO;
 import br.com.testDesign.services.CategoryService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +29,7 @@ public class CategoryResource {
         return ResponseEntity.ok(categoryService.findById(categoryId));
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<CategoryDTO> insertCategory(@RequestBody  CategoryDTO  categoryDTO) {
@@ -41,12 +43,14 @@ public class CategoryResource {
         return ResponseEntity.created(uri).body(categoryDTO);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId,  @RequestBody  CategoryDTO  categoryDTO) {
         return ResponseEntity.ok(categoryService.updateCategory(categoryId, categoryDTO));
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId) {

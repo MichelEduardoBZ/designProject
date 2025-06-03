@@ -4,6 +4,7 @@ import br.com.testDesign.dto.user.UserDTO;
 import br.com.testDesign.dto.user.UserInsertDTO;
 import br.com.testDesign.dto.user.UserUpdateDTO;
 import br.com.testDesign.services.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,18 +23,21 @@ public class UserResource {
     @Autowired
     private UserService userService;
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
         return ResponseEntity.ok(userService.findAll(pageable));
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping(value = "/{userId}")
     public ResponseEntity<UserDTO> findById(@PathVariable  Long userId) {
         return ResponseEntity.ok(userService.findById(userId));
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ADMIN')")
     @GetMapping(value = "/profile")
     public ResponseEntity<UserDTO> findUserAuthenticated() {
@@ -52,12 +56,14 @@ public class UserResource {
         return ResponseEntity.created(uri).body(userDTO);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{userId}")
     public ResponseEntity<UserDTO> updateUser(@PathVariable Long userId, @Valid  @RequestBody UserUpdateDTO  userDTO) {
         return ResponseEntity.ok(userService.updateUser(userId, userDTO));
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<UserDTO> deleteUser(@PathVariable Long userId) {

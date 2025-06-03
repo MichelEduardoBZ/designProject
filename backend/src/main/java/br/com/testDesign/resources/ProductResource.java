@@ -3,6 +3,7 @@ package br.com.testDesign.resources;
 import br.com.testDesign.dto.ProductDTO;
 import br.com.testDesign.projection.ProductProjection;
 import br.com.testDesign.services.ProductService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -40,6 +41,7 @@ public class ProductResource {
         return ResponseEntity.ok(productService.findById(productId));
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<ProductDTO> insertProduct(@Valid @RequestBody  ProductDTO  productDTO) {
@@ -53,12 +55,14 @@ public class ProductResource {
         return ResponseEntity.created(uri).body(productDTO);
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{productId}")
     public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long productId,  @Valid @RequestBody  ProductDTO  productDTO) {
         return ResponseEntity.ok(productService.updateProduct(productId, productDTO));
     }
 
+    @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{productId}")
     public ResponseEntity<ProductDTO> deleteProduct(@PathVariable Long productId) {
